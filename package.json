@@ -1,0 +1,25 @@
+{
+  "name": "abtest-project",
+  "version": "1.0.0",
+  "description": "A simple software tool to conduct ab test",
+  "homepage": "https://github.com/Aniketdey2004/ABTest-Project#readme",
+  "bugs": {
+    "url": "https://github.com/Aniketdey2004/ABTest-Project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aniketdey2004/ABTest-Project.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0"
+  }
+}

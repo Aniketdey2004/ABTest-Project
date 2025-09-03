@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple A/B Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      .card {
+        max-width: 400px;
+        padding: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      button {
+        padding: 0.8rem 1rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        background: #2563eb;
+        color: white;
+        font-weight: bold;
+      }
+      p {
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Welcome to our demo!</h1>
+      <p>This page is randomly showing CTA variant A or B.</p>
+      <button id="cta">Loading...</button>
+      <p id="msg"></p>
+    </div>
+
+    <script>
+      // Detect cookies (variant + uid)
+      function getCookie(name) {
+        const match = document.cookie.match(
+          new RegExp("(^| )" + name + "=([^;]+)")
+        );
+        return match ? match[2] : null;
+      }
+
+      const variant = getCookie("variant");
+      const userId = getCookie("uid");
+      const cta = document.getElementById("cta");
+
+      // Change button text depending on variant
+      if (variant === "A") {
+        cta.textContent = "Get Started";
+      } else {
+        cta.textContent = "Start Free";
+      }
+
+      cta.addEventListener("click", async () => {
+        await fetch("/event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ event: "click" }),
+          credentials: "include", // 👈 ensures cookies are sent
+        });
+        document.getElementById("msg").textContent = "Click recorded!";
+      });
+    </script>
+  </body>
+</html>
