@@ -26,6 +26,7 @@ const Event = mongoose.model("Event", eventSchema);
 
 // ====== API Routes ======
 app.post("/event", async (req, res) => {
+  console.log("hi")
   const userId = req.cookies.uid;
   const variant = req.cookies.variant;
   const event = req.body.event;
