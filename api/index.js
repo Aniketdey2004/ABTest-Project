@@ -87,4 +87,6 @@ app.get("/stats", async (req, res) => {
   res.json(tallies);
 });
 
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
+// ✅ Export as serverless function
+export default serverless(app);
