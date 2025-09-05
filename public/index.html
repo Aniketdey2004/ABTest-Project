@@ -92,7 +92,7 @@
       }
 
       // Record impression immediately
-      fetch("/event", {
+      fetch("/api/event", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event: "impression" }),
@@ -101,7 +101,7 @@
 
       // Record click
       cta.addEventListener("click", async () => {
-        await fetch("/event", {
+        await fetch("/api/event", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ event: "click" }),
