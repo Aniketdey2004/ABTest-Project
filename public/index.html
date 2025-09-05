@@ -5,42 +5,83 @@
     <title>Simple A/B Test</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        margin: 2rem;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f0f4ff, #e3e7ff);
       }
+
       .card {
-        max-width: 400px;
-        padding: 1.5rem;
-        border: 1px solid #ddd;
-        border-radius: 10px;
+        background: #fff;
+        max-width: 420px;
+        width: 100%;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
       }
+
       h1 {
         margin-top: 0;
+        font-size: 1.8rem;
+        color: #1e293b;
       }
-      button {
-        padding: 0.8rem 1rem;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        background: #2563eb;
-        color: white;
-        font-weight: bold;
-      }
+
       p {
         color: #555;
+        margin-bottom: 1.5rem;
+      }
+
+      button {
+        padding: 0.9rem 1.5rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        color: white;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      #msg {
+        margin-top: 1rem;
+        font-size: 0.95rem;
+        color: #16a34a;
+        font-weight: 500;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
   <body>
     <div class="card">
-      <h1>Welcome to our demo!</h1>
+      <h1>🚀 Welcome to our Demo!</h1>
       <p>This page is randomly showing CTA variant A or B.</p>
       <button id="cta">Loading...</button>
       <p id="msg"></p>
     </div>
 
     <script>
-      // Detect cookies (variant + uid)
+      // Helper to read cookies
       function getCookie(name) {
         const match = document.cookie.match(
           new RegExp("(^| )" + name + "=([^;]+)")
@@ -49,14 +90,15 @@
       }
 
       const variant = getCookie("variant");
-      const userId = getCookie("uid");
       const cta = document.getElementById("cta");
 
-      // Change button text depending on variant
+      // Variant-based button styling
       if (variant === "A") {
-        cta.textContent = "Get Started";
+        cta.textContent = "✨ Get Started";
+        cta.style.background = "#2563eb"; // blue
       } else {
-        cta.textContent = "Start Free";
+        cta.textContent = "🎉 Start Free";
+        cta.style.background = "#10b981"; // green
       }
 
       cta.addEventListener("click", async () => {
@@ -64,9 +106,9 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ event: "click" }),
-          credentials: "include", // 👈 ensures cookies are sent
+          credentials: "include",
         });
-        document.getElementById("msg").textContent = "Click recorded!";
+        document.getElementById("msg").textContent = "✅ Click recorded!";
       });
     </script>
   </body>
