@@ -184,5 +184,4 @@ app.get("/stats", async (req, res) => {
 });
 
 
-// ✅ Export as serverless function
-export default serverless(app);
+export const handler = serverless(app);
