@@ -18,7 +18,17 @@ app.use(cookieParser());
 
 
 // ====== MongoDB Setup ======
-await mongoose.connect(process.env.MONGODB_URI); // <-- Use env variable
+main()
+.then(()=>{
+  console.log("database connected successfully");
+})
+.catch((err)=>{
+  console.log(err);
+})
+async function  main(){
+  await mongoose.connect(process.env.MONGODB_URI);
+}
+ // <-- Use env variable
 
 const eventSchema = new mongoose.Schema({
   ts: { type: Date, default: Date.now },
