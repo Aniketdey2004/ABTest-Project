@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 // ====== MongoDB Setup ======
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("✅ database connected successfully"))
+  .then(() => console.log("✅ Database connected"))
   .catch(err => console.error(err));
 
 // ====== Schema ======
@@ -24,31 +24,29 @@ const eventSchema = new mongoose.Schema({
 });
 const Event = mongoose.model("Event", eventSchema);
 
-// ====== API Routes ======
+// ====== Routes ======
 app.post("/event", async (req, res) => {
-  console.log("hi")
   const userId = req.cookies.uid;
   const variant = req.cookies.variant;
   const event = req.body.event;
 
-  if (userId && variant && event === "click") {
+  if (userId && variant && event) {
     await Event.create({ userId, variant, event });
   }
   res.json({ ok: true });
 });
 
 app.get("/stats", async (req, res) => {
-  const pipeline = [
+  const results = await Event.aggregate([
     { $group: { _id: { variant: "$variant", event: "$event" }, count: { $sum: 1 } } },
-  ];
-  const results = await Event.aggregate(pipeline);
+  ]);
 
   const tallies = { A: { impression: 0, click: 0 }, B: { impression: 0, click: 0 } };
-  results.forEach((r) => {
-    tallies[r._id.variant][r._id.event] = r.count;
-  });
+  results.forEach(r => { tallies[r._id.variant][r._id.event] = r.count; });
 
   res.json(tallies);
 });
 
-export default serverless(app);
+// ====== Export for Vercel ======
+const handler = serverless(app);
+export default handler;
