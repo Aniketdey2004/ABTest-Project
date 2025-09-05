@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+import dotenv from "dotenv"; // <-- Add this line
+
+dotenv.config(); // <-- Load environment variables
 
 // Setup paths
 const __filename = fileURLToPath(import.meta.url);
@@ -14,7 +17,7 @@ app.use(cookieParser());
 
 
 // ====== MongoDB Setup ======
-await mongoose.connect("mongodb://127.0.0.1:27017/abtest");
+await mongoose.connect(process.env.MONGODB_URI); // <-- Use env variable
 
 const eventSchema = new mongoose.Schema({
   ts: { type: Date, default: Date.now },
@@ -29,7 +32,6 @@ const Event = mongoose.model("Event", eventSchema);
 // Serve homepage with variant assignment
 app.get("/", async (req, res) => {
   let variant = req.cookies.variant;
-  console.log(variant);
   if (!variant) {
     variant = Math.random() < 0.5 ? "A" : "B";
     res.cookie("variant", variant, { maxAge: 7 * 24 * 3600 * 1000, path: "/" });
@@ -47,7 +49,6 @@ app.get("/", async (req, res) => {
   // Send HTML page
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
-
 
 app.post("/event", async (req, res) => {
   const userId = req.cookies.uid;
