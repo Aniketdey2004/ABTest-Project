@@ -41,10 +41,8 @@ const Event = mongoose.model("Event", eventSchema);
 // ====== Routes ======
 
 // Serve homepage with variant assignment
-app.get("/",(req,res)=>{
-  res.send("welcome home");
-});
-app.get("/home", async (req, res) => {
+app.get("/", async (req, res) => {
+  console.log("hi");
   let variant = req.cookies.variant;
   if (!variant) {
     variant = Math.random() < 0.5 ? "A" : "B";
